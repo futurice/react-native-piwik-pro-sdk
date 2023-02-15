@@ -54,7 +54,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val screen = trackHelper.screen(path).title(options?.getString("title"))
 
       applyOptionalParameters(trackHelper, options)
-      applyScreenCustomVariables(screen, options?.getMap("screenCustomVariables"))
+      applyScreenCustomVariables(trackHelper, options?.getMap("screenCustomVariables"))
       screen.with(tracker)
 
       promise.resolve(null)
@@ -94,7 +94,6 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackException(
     description: String,
-    isFatal: Boolean,
     options: ReadableMap?,
     promise: Promise
   ) {
@@ -102,7 +101,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.exception().description(description).fatal(isFatal).with(getTracker())
+      trackHelper.exception().description(description).with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -122,8 +121,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.socialInteraction(interaction, network).target(options?.getString("target"))
-        .with(tracker)
+      trackHelper.socialInteraction(interaction, network).with(tracker)
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -161,7 +159,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.outlink(URL(url)).with(getTracker())
+      trackHelper.outlink(url).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -220,7 +218,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackGoal(goal: Int, options: ReadableMap?, promise: Promise) {
+  fun trackGoal(goal: String, options: ReadableMap?, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
 
@@ -255,12 +253,10 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackCampaign(url: String, options: ReadableMap?, promise: Promise) {
+  fun trackCampaign(url: String, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
-
-      applyOptionalParameters(trackHelper, options)
-      trackHelper.campaign(URL(url)).with(getTracker())
+      trackHelper.campaign(URL(url))
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -583,7 +579,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   private fun applyScreenCustomVariables(
-    screen: TrackHelper.Screen,
+    trackHelper: TrackHelper,
     customVariables: ReadableMap?
   ) {
     customVariables?.entryIterator?.forEach {
@@ -592,7 +588,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val name = valuesMap.getString("name")
       val value = valuesMap.getString("value")
 
-      screen.variable(key, name, value)
+      trackHelper.variable(key, name, value)
     }
   }
 

@@ -74,7 +74,6 @@ RCT_REMAP_METHOD(trackCustomEvent,
 
 RCT_REMAP_METHOD(trackException,
                  trackExceptionWithDescription:(nonnull NSString*)description
-                 withIsFatal:(BOOL)isFatal
                  withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -87,7 +86,7 @@ RCT_REMAP_METHOD(trackException,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendExceptionWithDescription:description isFatal:isFatal];
+        [[PiwikTracker sharedInstance] sendExceptionWithDescription:description];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -109,7 +108,7 @@ RCT_REMAP_METHOD(trackSocialInteraction,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction target:options[@"target"] network:network];
+        [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction network:network];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -240,7 +239,7 @@ RCT_REMAP_METHOD(trackInteraction,
 }
 
 RCT_REMAP_METHOD(trackGoal,
-                 trackGoalWithGoal:(nonnull NSNumber*)goal
+                 trackGoalWithGoal:(nonnull NSString*)goal
                  withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -253,7 +252,7 @@ RCT_REMAP_METHOD(trackGoal,
     @try {
         [self applyOptionalParameters:options];
         
-        [[PiwikTracker sharedInstance] sendGoalWithID:[goal intValue] revenue:options[@"revenue"]];
+        [[PiwikTracker sharedInstance] sendGoalWithID:goal revenue:options[@"revenue"]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -292,7 +291,6 @@ RCT_REMAP_METHOD(trackEcommerce,
 
 RCT_REMAP_METHOD(trackCampaign,
                  trackCampaignWithUrl:(nonnull NSString*)url
-                 withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -302,8 +300,6 @@ RCT_REMAP_METHOD(trackCampaign,
     }
     
     @try {
-        [self applyOptionalParameters:options];
-        
         [[PiwikTracker sharedInstance] sendCampaign:url];
         resolve(nil);
     } @catch (NSException *exception) {

@@ -46,11 +46,10 @@ async function trackCustomEvent(
 
 async function trackException(
   description: string,
-  isFatal: boolean,
   options?: CommonEventOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
-  return await PiwikProNativeSdk.trackException(description, isFatal, options);
+  return await PiwikProNativeSdk.trackException(description, options);
 }
 
 async function trackSocialInteraction(
@@ -116,7 +115,7 @@ async function trackInteraction(
 }
 
 async function trackGoal(
-  goal: number,
+  goal: string,
   options?: TrackGoalOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
@@ -131,12 +130,8 @@ async function trackEcommerce(
   return await PiwikProNativeSdk.trackEcommerce(orderId, grandTotal, options);
 }
 
-async function trackCampaign(
-  url: string,
-  options?: CommonEventOptions
-): Promise<void> {
-  validateCustomKeyValues(options);
-  return await PiwikProNativeSdk.trackCampaign(url, options);
+async function trackCampaign(url: string): Promise<void> {
+  return await PiwikProNativeSdk.trackCampaign(url);
 }
 
 async function trackProfileAttributes(
