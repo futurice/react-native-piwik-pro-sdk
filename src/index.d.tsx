@@ -29,12 +29,10 @@ type PiwikProSdkType = {
   /**
    * Tracks exception.
    * @description the exception message
-   * @isFatal determines whether the exception prefix will be `'fatal'` or `'caught'`
    * @options exception tracking options (customDimensions, visitCustomVariables)
    */
   trackException(
     description: string,
-    isFatal: boolean,
     options?: CommonEventOptions
   ): Promise<void>;
 
@@ -103,7 +101,7 @@ type PiwikProSdkType = {
    * @goal tracking request will trigger a conversion for the goal of the website being tracked with given ID
    * @options goal tracking options (revenue, customDimensions, visitCustomVariables)
    */
-  trackGoal(goal: number, options?: TrackGoalOptions): Promise<void>;
+  trackGoal(goal: string, options?: TrackGoalOptions): Promise<void>;
 
   /**
    * Tracks ecommerce transaction.
@@ -119,9 +117,8 @@ type PiwikProSdkType = {
   /**
    * Tracks campaign.
    * @url campaign URL
-   * @options campaign tracking options (customDimensions, visitCustomVariables)
    */
-  trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
+  trackCampaign(url: string): Promise<void>;
 
   /**
    * Tracks user profile attributes.
@@ -301,9 +298,7 @@ type TrackCustomEventOptions = CommonEventOptions & {
   path?: string;
 };
 
-type TrackSocialInteractionOptions = CommonEventOptions & {
-  target?: string;
-};
+type TrackSocialInteractionOptions = CommonEventOptions & {};
 
 type TrackSearchOptions = CommonEventOptions & {
   category?: string;

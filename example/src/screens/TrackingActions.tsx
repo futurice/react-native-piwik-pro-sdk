@@ -83,7 +83,7 @@ export default function TrackingActions() {
     };
 
     try {
-      await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
+      await PiwikProSdk.trackException(`exception_${eventNum}`, options);
       successMessage('Track exception');
     } catch (error) {
       dispatch(setError((error as Error).message));
@@ -93,7 +93,6 @@ export default function TrackingActions() {
   const trackSocialInteraction = async () => {
     const options: TrackSocialInteractionOptions = {
       visitCustomVariables,
-      target: 'Photo',
       // customDimensions,
     };
 
@@ -206,7 +205,10 @@ export default function TrackingActions() {
     };
 
     try {
-      await PiwikProSdk.trackGoal(1, options);
+      await PiwikProSdk.trackGoal(
+        '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059',
+        options
+      );
       successMessage('Track goal');
     } catch (error) {
       dispatch(setError((error as Error).message));
@@ -245,15 +247,9 @@ export default function TrackingActions() {
   };
 
   const trackCampaign = async () => {
-    const options: CommonEventOptions = {
-      visitCustomVariables,
-      // customDimensions,
-    };
-
     try {
       await PiwikProSdk.trackCampaign(
-        `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`,
-        options
+        `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`
       );
       successMessage('Track campaign');
     } catch (error) {

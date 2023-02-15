@@ -145,27 +145,23 @@ describe('PiwikProSdk', () => {
   describe('#trackException', () => {
     it('should call trackException from native SDK', async () => {
       const description = 'sample exception';
-      const isFatal = true;
       const options: CommonEventOptions = commonEventOptions;
 
-      await PiwikProSdk.trackException(description, isFatal, options);
+      await PiwikProSdk.trackException(description, options);
 
       expect(NativeModules.PiwikProSdk.trackException).toHaveBeenCalledWith(
         description,
-        isFatal,
         options
       );
     });
 
     it('should call trackException from native SDK when options are not passed', async () => {
       const description = 'sample exception';
-      const isFatal = true;
 
-      await PiwikProSdk.trackException(description, isFatal);
+      await PiwikProSdk.trackException(description);
 
       expect(NativeModules.PiwikProSdk.trackException).toHaveBeenCalledWith(
         description,
-        isFatal,
         undefined
       );
     });
@@ -177,7 +173,6 @@ describe('PiwikProSdk', () => {
       const network = 'facebook';
       const options: TrackSocialInteractionOptions = {
         ...commonEventOptions,
-        target: 'photo',
       };
 
       await PiwikProSdk.trackSocialInteraction(interaction, network, options);
@@ -339,7 +334,7 @@ describe('PiwikProSdk', () => {
 
   describe('#trackGoal', () => {
     it('should call trackGoal from native SDK', async () => {
-      const goal = 1;
+      const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
       const options: TrackGoalOptions = {
         ...commonEventOptions,
         revenue: 3,
@@ -354,7 +349,7 @@ describe('PiwikProSdk', () => {
     });
 
     it('should call trackGoal from native SDK when options are not passed', async () => {
-      const goal = 1;
+      const goal = '27ecc5e3-8ae0-40c3-964b-5bd8ee3da059';
 
       await PiwikProSdk.trackGoal(goal);
 
@@ -400,14 +395,10 @@ describe('PiwikProSdk', () => {
     it('should call trackCampaign from native SDK', async () => {
       const url =
         'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
-      const options = commonEventOptions;
 
-      await PiwikProSdk.trackCampaign(url, options);
+      await PiwikProSdk.trackCampaign(url);
 
-      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(
-        url,
-        options
-      );
+      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(url);
     });
 
     it('should call trackCampaign from native SDK when options are not passed', async () => {
@@ -416,10 +407,7 @@ describe('PiwikProSdk', () => {
 
       await PiwikProSdk.trackCampaign(url);
 
-      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(
-        url,
-        undefined
-      );
+      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(url);
     });
   });
 
