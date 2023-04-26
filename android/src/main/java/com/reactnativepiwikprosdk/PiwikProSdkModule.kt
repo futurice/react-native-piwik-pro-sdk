@@ -256,7 +256,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   fun trackCampaign(url: String, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
-      trackHelper.campaign(URL(url))
+      trackHelper.campaign(url)
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
